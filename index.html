@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Payoff Dashboard – Personal Impact</title>
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            background: linear-gradient(135deg, #0f1620, #1a2a44); 
+            color: white; 
+            text-align: center; 
+            margin: 0; 
+            padding: 20px;
+        }
+        h1 { font-size: 2.5em; margin: 20px 0; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        .clocks { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 40px 0; }
+        .clock { flex: 1; min-width: 300px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .official { background: rgba(255,59,48,0.15); border: 3px solid #ff3b30; }
+        .payoff { background: rgba(52,199,89,0.15); border: 3px solid #34c759; }
+        .label { font-size: 1.4em; margin-bottom: 10px; opacity: 0.9; }
+        .amount { font-size: 3em; font-weight: bold; margin: 15px 0; }
+        .change { font-size: 1.3em; }
+        .up { color: #ff3b30; }
+        .down { color: #34c759; }
+
+        .personal { margin: 50px auto; padding: 30px; background: rgba(255,255,255,0.05); border-radius: 20px; max-width: 900px; }
+        .personal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .box { padding: 20px; background: rgba(255,255,255,0.1); border-radius: 15px; }
+        .big { font-size: 2.2em; font-weight: bold; }
+        .saved { color: #34c759; }
+
+        footer { margin-top: 60px; font-size: 0.9em; opacity: 0.7; }
+        a { color: #34c759; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The Payoff Dashboard – Full Speed</h1>
+        <p>What happens if we pay off maturing debt at 100% starting TODAY</p>
+
+        <div class="clocks">
+            <div class="clock official">
+                <div class="label">Official U.S. National Debt</div>
+                <div class="amount" id="officialDebt">$37,890,456,789,123</div>
+                <div class="change up">+ $5.97 billion today ↑</div>
+            </div>
+            <div class="clock payoff">
+                <div class="label">Payoff Clock (100% Immediate Melt)</div>
+                <div class="amount" id="payoffDebt">$37,890,456,789,123</div>
+                <div class="change down">- $22 billion today ↓ (Full speed)</div>
+            </div>
+        </div>
+
+        <div class="personal">
+            <h2>Your Personal Share of the Debt – Live</h2>
+            <div class="personal-grid">
+                <div class="box">
+                    <div>Per U.S. Citizen (341 million)</div>
+                    <div class="big" id="perCitizenOfficial">$111,408</div>
+                    <div class="big saved" id="perCitizenPayoff">$111,408</div>
+                    <div>You would save <strong><span id="citizenSaved">$0</span></strong></div>
+                </div>
+                <div class="box">
+                    <div>Per Taxpayer (159 million)</div>
+                    <div class="big" id="perTaxpayerOfficial">$238,048</div>
+                    <div class="big saved" id="perTaxpayerPayoff">$238,048</div>
+                    <div>You would save <strong><span id="taxpayerSaved">$0</span></strong></div>
+                </div>
+                <div class="box">
+                    <div>Per Household (132 million)</div>
+                    <div class="big" id="perHouseholdOfficial">$288,101</div>
+                    <div class="big saved" id="perHouseholdPayoff">$288,101</div>
+                    <div>You would save <strong><span id="householdSaved">$0</span></strong></div>
+                </div>
+                <div class="box">
+                    <div>Per Child Born Today</div>
+                    <div class="big" id="perChildOfficial">$111,408</div>
+                    <div class="big saved" id="perChildPayoff">$111,408</div>
+                    <div>They inherit <strong><span id="childSaved">$0</span> less debt</span></strong></div>
+                </div>
+            </div>
+        </div>
+
+        <p>Simulation launched live: November 23, 2025<br>
+        <strong>Melted so far: <span id="melted">$0</span> | Interest saved YTD: <span id="saved">$0</span></strong></p>
+
+        <footer>
+            Unofficial citizen initiative • <a href="https://share.grok.x.ai/s/1k9v7m3q">Full plan & bill text</a><br>
+            Support the movement: <a href="https://thepayoff.substack.com">Substack</a> • <a href="https://patreon.com/thepayoff">Patreon</a>
+        </footer>
+    </div>
+
+    <script>
+        // Starting numbers – Nov 23, 2025
+        let officialDebt = 37890456789123;   // pennies
+        let payoffDebt    = 37890456789123;
+
+        // Population numbers (2025 estimates)
+        const citizens    = 341000000;
+        const taxpayers   = 159000000;
+        const households  = 132000000;
+
+        // Rates
+        const perSecondGrowth = 163000;                    // official growth
+        const perSecondMelt   = 22000000000 / 86400;       // $22B daily melt
+
+        setInterval(() => {
+            officialDebt += perSecondGrowth;
+            payoffDebt   -= perSecondMelt;
+
+            // Big clocks
+            document.getElementById('officialDebt').textContent = '$' + (officialDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            document.getElementById('payoffDebt').textContent   = '$' + (payoffDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            // Personal shares – Official
+            document.getElementById('perCitizenOfficial').textContent   = '$' + Math.floor(officialDebt/100/citizens).toLocaleString();
+            document.getElementById('perTaxpayerOfficial').textContent  = '$' + Math.floor(officialDebt/100/taxpayers).toLocaleString();
+            document.getElementById('perHouseholdOfficial').textContent = '$' + Math.floor(officialDebt/100/households).toLocaleString();
+            document.getElementById('perChildOfficial').textContent     = '$' + Math.floor(officialDebt/100/citizens).toLocaleString();
+
+            // Personal shares – Payoff
+            document.getElementById('perCitizenPayoff').textContent   = '$' + Math.floor(payoffDebt/100/citizens).toLocaleString();
+            document.getElementById('perTaxpayerPayoff').textContent  = '$' + Math.floor(payoffDebt/100/taxpayers).toLocaleString();
+            document.getElementById('perHouseholdPayoff').textContent = '$' + Math.floor(payoffDebt/100/households).toLocaleString();
+            document.getElementById('perChildPayoff').textContent     = '$' + Math.floor(payoffDebt/100/citizens).toLocaleString();
+
+            // Savings
+            const citizenSaved   = Math.floor((officialDebt - payoffDebt)/100/citizens);
+            const taxpayerSaved  = Math.floor((officialDebt - payoffDebt)/100/taxpayers);
+            const householdSaved = Math.floor((officialDebt - payoffDebt)/100/households);
+
+            document.getElementById('citizenSaved').textContent   = '$' + citizenSaved.toLocaleString();
+            document.getElementById('taxpayerSaved').textContent  = '$' + taxpayerSaved.toLocaleString();
+            document.getElementById('householdSaved').textContent = '$' + householdSaved.toLocaleString();
+            document.getElementById('childSaved').textContent     = '$' + citizenSaved.toLocaleString();
+
+            // Totals
+            const melted = officialDebt - payoffDebt;
+            document.getElementById('melted').textContent = '$' + (melted/1e12).toFixed(3) + 'T';
+            document.getElementById('saved').textContent  = '$' + (melted*0.034/365*(Date.now()-new Date('2025-11-23'))/86400000/1e9).toFixed(1) + 'B';
+        }, 1000);
+    </script>
+</body>
+</html>
