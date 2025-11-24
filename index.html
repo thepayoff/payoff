@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Payoff Dashboard – Personal Impact</title>
+    <title>The Payoff Dashboard – Deficit-Proof</title>
     <style>
         body { 
             font-family: 'Helvetica Neue', Arial, sans-serif; 
@@ -37,19 +37,19 @@
 </head>
 <body>
     <div class="container">
-        <h1>The Payoff Dashboard – Full Speed</h1>
-        <p>What happens if we pay off maturing debt at 100% starting TODAY</p>
+        <h1>The Payoff Dashboard – Full Speed + Deficit Offset</h1>
+        <p>Offsets $1.8T annual deficit (CBO 2025) while melting maturities at 100%</p>
 
         <div class="clocks">
             <div class="clock official">
                 <div class="label">Official U.S. National Debt</div>
                 <div class="amount" id="officialDebt">$37,890,456,789,123</div>
-                <div class="change up">+ $5.97 billion today ↑</div>
+                <div class="change up">+ $6.95 billion today ↑ (incl. $1.8T deficit)</div>
             </div>
             <div class="clock payoff">
-                <div class="label">Payoff Clock (100% Immediate Melt)</div>
+                <div class="label">Payoff Clock (Deficits Offset + Full Melt)</div>
                 <div class="amount" id="payoffDebt">$37,890,456,789,123</div>
-                <div class="change down">- $22 billion today ↓ (Full speed)</div>
+                <div class="change down">- $26.93 billion today ↓</div>
             </div>
         </div>
 
@@ -78,7 +78,7 @@
                     <div>Per Child Born Today</div>
                     <div class="big" id="perChildOfficial">$111,408</div>
                     <div class="big saved" id="perChildPayoff">$111,408</div>
-                    <div>They inherit <strong><span id="childSaved">$0</span> less debt</span></strong></div>
+                    <div>They inherit <strong><span id="childSaved">$0</span> less debt</strong></div>
                 </div>
             </div>
         </div>
@@ -88,7 +88,8 @@
 
         <footer>
             Unofficial citizen initiative • <a href="https://share.grok.x.ai/s/1k9v7m3q">Full plan & bill text</a><br>
-            Support the movement: <a href="https://thepayoff.substack.com">Substack</a> • <a href="https://patreon.com/thepayoff">Patreon</a>
+            Support: <a href="https://thepayoff.substack.com">Substack</a> • <a href="https://patreon.com/thepayoff">Patreon</a><br>
+            Includes $1.8T annual deficit offset (CBO 2025 baseline).
         </footer>
     </div>
 
@@ -102,17 +103,22 @@
         const taxpayers   = 159000000;
         const households  = 132000000;
 
-        // Rates
-        const perSecondGrowth = 163000;                    // official growth
-        const perSecondMelt   = 22000000000 / 86400;       // $22B daily melt
+        // Rates (updated for $1.8T deficit)
+        const perSecondGrowth = 163000;                    // base growth
+        const dailyDeficitAdd = 1800000000000 / 365;       // $4.93B daily deficit
+        const perSecondDeficit = dailyDeficitAdd / 86400;  // spread out
+        const dailyMaturityMelt = 22000000000;             // $22B maturities
+        const perSecondMelt = dailyMaturityMelt / 86400;   // full melt
+        const totalPerSecondMelt = perSecondMelt + dailyDeficitAdd / 86400;  // + deficit offset
 
         setInterval(() => {
-            officialDebt += perSecondGrowth;
-            payoffDebt   -= perSecondMelt;
-
-            // Big clocks
+            // Official: base growth + full deficit add
+            officialDebt += perSecondGrowth + perSecondDeficit;
             document.getElementById('officialDebt').textContent = '$' + (officialDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            document.getElementById('payoffDebt').textContent   = '$' + (payoffDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+            // Payoff: subtract maturities + offset deficit (no add)
+            payoffDebt -= totalPerSecondMelt;
+            document.getElementById('payoffDebt').textContent = '$' + (payoffDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
             // Personal shares – Official
             document.getElementById('perCitizenOfficial').textContent   = '$' + Math.floor(officialDebt/100/citizens).toLocaleString();
