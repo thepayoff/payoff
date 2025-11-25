@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Payoff Dashboard – Deficit-Proof</title>
+    <title>The Payoff Dashboard – Legacy Debt Focus</title>
     <style>
         body { 
             font-family: 'Helvetica Neue', Arial, sans-serif; 
@@ -12,6 +12,15 @@
             text-align: center; 
             margin: 0; 
             padding: 20px;
+        }
+        .disclaimer-top {
+            background: rgba(255,193,7,0.2);
+            border: 2px solid #ffc107;
+            padding: 12px;
+            margin: 10px auto;
+            max-width: 900px;
+            border-radius: 10px;
+            font-size: 0.95em;
         }
         h1 { font-size: 2.5em; margin: 20px 0; }
         .container { max-width: 1100px; margin: 0 auto; }
@@ -31,14 +40,20 @@
         .big { font-size: 2.2em; font-weight: bold; }
         .saved { color: #34c759; }
 
-        footer { margin-top: 60px; font-size: 0.9em; opacity: 0.7; }
+        footer { margin-top: 60px; font-size: 0.9em; opacity: 0.8; line-height: 1.5; }
         a { color: #34c759; text-decoration: none; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>The Payoff Dashboard – Full Speed + Deficit Offset</h1>
-        <p>Offsets $1.8T annual deficit (CBO 2025) while melting maturities at 100%</p>
+        <div class="disclaimer-top">
+            <strong>Unofficial citizen-led education and advocacy project.</strong><br>
+            Not affiliated with the U.S. government, Treasury, or Federal Reserve. No financial advice.
+        </div>
+
+        <h1>The Payoff Dashboard – Legacy Debt Focus</h1>
+        <p>Redeems maturing Treasury debt only (~$22B/day) with dollar-pegged LibertyCoin.<br>
+        Deficits remain bond-funded – no market disruption, no new money creation.</p>
 
         <div class="clocks">
             <div class="clock official">
@@ -47,9 +62,9 @@
                 <div class="change up">+ $6.95 billion today ↑ (incl. $1.8T deficit)</div>
             </div>
             <div class="clock payoff">
-                <div class="label">Payoff Clock (Deficits Offset + Full Melt)</div>
+                <div class="label">Payoff Clock – Legacy Melt Only</div>
                 <div class="amount" id="payoffDebt">$37,890,456,789,123</div>
-                <div class="change down">- $26.93 billion today ↓</div>
+                <div class="change" id="payoffChange">Net +$4.93B today (deficit adds, no rollover borrowing)</div>
             </div>
         </div>
 
@@ -60,92 +75,87 @@
                     <div>Per U.S. Citizen (341 million)</div>
                     <div class="big" id="perCitizenOfficial">$111,408</div>
                     <div class="big saved" id="perCitizenPayoff">$111,408</div>
-                    <div>You would save <strong><span id="citizenSaved">$0</span></strong></div>
+                    <div>Saved so far <strong><span id="citizenSaved">$0</span></strong></div>
                 </div>
                 <div class="box">
                     <div>Per Taxpayer (159 million)</div>
                     <div class="big" id="perTaxpayerOfficial">$238,048</div>
                     <div class="big saved" id="perTaxpayerPayoff">$238,048</div>
-                    <div>You would save <strong><span id="taxpayerSaved">$0</span></strong></div>
+                    <div>Saved so far <strong><span id="taxpayerSaved">$0</span></strong></div>
                 </div>
                 <div class="box">
                     <div>Per Household (132 million)</div>
                     <div class="big" id="perHouseholdOfficial">$288,101</div>
                     <div class="big saved" id="perHouseholdPayoff">$288,101</div>
-                    <div>You would save <strong><span id="householdSaved">$0</span></strong></div>
+                    <div>Saved so far <strong><span id="householdSaved">$0</span></strong></div>
                 </div>
                 <div class="box">
                     <div>Per Child Born Today</div>
                     <div class="big" id="perChildOfficial">$111,408</div>
                     <div class="big saved" id="perChildPayoff">$111,408</div>
-                    <div>They inherit <strong><span id="childSaved">$0</span> less debt</strong></div>
+                    <div>Inherits <strong><span id="childSaved">$0</span> less debt</strong></div>
                 </div>
             </div>
         </div>
 
-        <p>Simulation launched live: November 23, 2025<br>
-        <strong>Melted so far: <span id="melted">$0</span> | Interest saved YTD: <span id="saved">$0</span></strong></p>
+        <p>Simulation launched: November 25, 2025<br>
+        <strong>Legacy debt melted: <span id="melted">$0</span> | Interest saved YTD: <span id="saved">$0</span></strong></p>
 
         <footer>
-            Unofficial citizen initiative • <a href="https://share.grok.x.ai/s/1k9v7m3q">Full plan & bill text</a><br>
-            Support: <a href="https://thepayoff.substack.com">Substack</a> • <a href="https://patreon.com/thepayoff">Patreon</a><br>
-            Includes $1.8T annual deficit offset (CBO 2025 baseline).
+            <strong>Unofficial citizen-led education and advocacy project.</strong><br>
+            Not affiliated with the U.S. government, Treasury, or Federal Reserve. No financial advice.<br>
+            Full plan & bill text: <a href="https://share.grok.x.ai/s/1k9v7m3q">share.grok.x.ai/s/1k9v7m3q</a><br>
+            Support the movement: <a href="https://thepayoff.substack.com">Substack</a> • <a href="https://patreon.com/thepayoff">Patreon</a>
         </footer>
     </div>
 
     <script>
-        // Starting numbers – Nov 23, 2025
+        // Starting numbers – November 25, 2025
         let officialDebt = 37890456789123;   // pennies
         let payoffDebt    = 37890456789123;
 
-        // Population numbers (2025 estimates)
         const citizens    = 341000000;
         const taxpayers   = 159000000;
         const households  = 132000000;
 
-        // Rates (updated for $1.8T deficit)
-        const perSecondGrowth = 163000;                    // base growth
-        const dailyDeficitAdd = 1800000000000 / 365;       // $4.93B daily deficit
-        const perSecondDeficit = dailyDeficitAdd / 86400;  // spread out
-        const dailyMaturityMelt = 22000000000;             // $22B maturities
-        const perSecondMelt = dailyMaturityMelt / 86400;   // full melt
-        const totalPerSecondMelt = perSecondMelt + dailyDeficitAdd / 86400;  // + deficit offset
+        const perSecondGrowth = 163000;
+        const dailyDeficitAdd = 1800000000000 / 365;
+        const perSecondDeficit = dailyDeficitAdd / 86400;
+        const dailyMaturityMelt = 22000000000;
+        const perSecondMelt = dailyMaturityMelt / 86400;
 
         setInterval(() => {
-            // Official: base growth + full deficit add
             officialDebt += perSecondGrowth + perSecondDeficit;
+            payoffDebt   += perSecondDeficit - perSecondMelt;
+
             document.getElementById('officialDebt').textContent = '$' + (officialDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            document.getElementById('payoffDebt').textContent   = '$' + (payoffDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-            // Payoff: subtract maturities + offset deficit (no add)
-            payoffDebt -= totalPerSecondMelt;
-            document.getElementById('payoffDebt').textContent = '$' + (payoffDebt/100).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            const netDailyPayoff = dailyDeficitAdd - dailyMaturityMelt;
+            document.getElementById('payoffChange').innerHTML = 
+                `Net ${netDailyPayoff>0?'<span class="up">+':'<span class="down">'}${(Math.abs(netDailyPayoff)/1e9).toFixed(2)} billion today</span><br>
+                (deficit adds, no rollover borrowing)`;
 
-            // Personal shares – Official
+            // Personal shares
             document.getElementById('perCitizenOfficial').textContent   = '$' + Math.floor(officialDebt/100/citizens).toLocaleString();
             document.getElementById('perTaxpayerOfficial').textContent  = '$' + Math.floor(officialDebt/100/taxpayers).toLocaleString();
             document.getElementById('perHouseholdOfficial').textContent = '$' + Math.floor(officialDebt/100/households).toLocaleString();
             document.getElementById('perChildOfficial').textContent     = '$' + Math.floor(officialDebt/100/citizens).toLocaleString();
 
-            // Personal shares – Payoff
             document.getElementById('perCitizenPayoff').textContent   = '$' + Math.floor(payoffDebt/100/citizens).toLocaleString();
             document.getElementById('perTaxpayerPayoff').textContent  = '$' + Math.floor(payoffDebt/100/taxpayers).toLocaleString();
             document.getElementById('perHouseholdPayoff').textContent = '$' + Math.floor(payoffDebt/100/households).toLocaleString();
             document.getElementById('perChildPayoff').textContent     = '$' + Math.floor(payoffDebt/100/citizens).toLocaleString();
 
-            // Savings
-            const citizenSaved   = Math.floor((officialDebt - payoffDebt)/100/citizens);
-            const taxpayerSaved  = Math.floor((officialDebt - payoffDebt)/100/taxpayers);
-            const householdSaved = Math.floor((officialDebt - payoffDebt)/100/households);
+            // Savings from legacy melt only
+            const melted = (officialDebt - payoffDebt);
+            document.getElementById('citizenSaved').textContent   = '$' + Math.floor(melted/100/citizens).toLocaleString();
+            document.getElementById('taxpayerSaved').textContent  = '$' + Math.floor(melted/100/taxpayers).toLocaleString();
+            document.getElementById('householdSaved').textContent = '$' + Math.floor(melted/100/households).toLocaleString();
+            document.getElementById('childSaved').textContent     = '$' + Math.floor(melted/100/citizens).toLocaleString();
 
-            document.getElementById('citizenSaved').textContent   = '$' + citizenSaved.toLocaleString();
-            document.getElementById('taxpayerSaved').textContent  = '$' + taxpayerSaved.toLocaleString();
-            document.getElementById('householdSaved').textContent = '$' + householdSaved.toLocaleString();
-            document.getElementById('childSaved').textContent     = '$' + citizenSaved.toLocaleString();
-
-            // Totals
-            const melted = officialDebt - payoffDebt;
             document.getElementById('melted').textContent = '$' + (melted/1e12).toFixed(3) + 'T';
-            document.getElementById('saved').textContent  = '$' + (melted*0.034/365*(Date.now()-new Date('2025-11-23'))/86400000/1e9).toFixed(1) + 'B';
+            document.getElementById('saved').textContent  = '$' + (melted*0.034/365*(Date.now()-new Date('2025-11-25'))/86400000/1e9).toFixed(1) + 'B';
         }, 1000);
     </script>
 </body>
